@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>HR人员管理系统</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+    <script th:src="@{/static/layui/layui.js}"></script>
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">人员管理</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <!--<ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>-->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="">控制台<span class="layui-badge">9</span></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="">个人中心<span class="layui-badge-dot"></span></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href=""><img src="//t.cn/RCzsdCq" class="layui-nav-img" th:text="${session.username}"></a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">修改信息</a></dd>
+                    <dd><a href="javascript:;">安全管理</a></dd>
+                    <dd><a href="/api/logout">退了</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">人事管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">人员信息管理</a></dd>
+                        <!--<dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="javascript:;">列表三</a></dd>
+                        <dd><a href="">超链接</a></dd>-->
+                    </dl>
+                </li>
+                <!--<li class="layui-nav-item">
+                    <a href="javascript:;">解决方案</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">列表一</a></dd>
+                        <dd><a href="javascript:;">列表二</a></dd>
+                        <dd><a href="javascript:;">超链接</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;">云市场</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">发布商品</a></li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <!--toolbar: '#barDemo'-->
+            <div class="demoTable">
+                <form class="layui-form" action="" lay-filter="search_form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">搜索姓名：</label>
+                        <div class="layui-input-inline" style="width: 160px;">
+                            <input type="text" width="120px" name="name" id="name" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">搜索岗位：</label>
+                        <div class="layui-input-inline" style="width: 160px;">
+                            <input type="text" width="120px" name="post" id="post1" lay-verify="title" autocomplete="off" placeholder="请输入" class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label">员工类型：</label>
+                        <div class="layui-input-inline" style="width: 160px;">
+                            <select name="type" id="type">
+                                <option value=""></option>
+                                <option value="正式员工">正式员工</option>
+                                <option value="离职">离职</option>
+                                <option value="试用">试用</option>
+                                <option value="实习">实习</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" style="width: 120px;">入职时间Start：</label>
+                        <div class="layui-input-inline" style="width: 160px;">
+                            <input type="text" name="joinDateStart" id="joinDateStart" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label" style="width: 120px;">入职时间End：</label>
+                        <div class="layui-input-inline" style="width: 160px;">
+                            <input type="text" name="joinDateEnd" id="joinDateEnd" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                        </div>
+
+                        <button class="layui-btn" type="button" data-type="reload">搜索</button>
+                        <button class="layui-btn" data-type="addRow">添加行</button>
+                        <button class="layui-btn" data-type="exportTable" type="button">数据导出</button>
+                        <button type="button" class="layui-btn" id="uploadEmployeeFile"><i class="layui-icon"></i>数据导入</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <table class="layui-hide" id="mytable" lay-filter="mytable"></table>
+
+            <script type="text/html" id="barDemo">
+                <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+<script th:src="@{/static/layui/lay_exts/excel.js}"></script>
+<script>
+    //JavaScript代码区域
+    layui.config({
+        base: '/static/layui/lay_exts/',
+    }).extend({
+        excel: 'excel',
+    });
+
+    layui.use(['element','jquery', 'table', 'upload', 'form','layer', 'laydate', 'excel'], function(){
+        var $ = layui.jquery
+            ,element = layui.element
+            ,table = layui.table
+            ,laydate = layui.laydate
+            ,form = layui.form
+            ,excel = layui.excel
+            ,upload = layui.upload;
+
+        //日期
+        laydate.render({
+            elem: '#joinDateStart'
+        });
+        laydate.render({
+            elem: '#joinDateEnd'
+        });
+
+        upload.render({
+            elem: '#uploadEmployeeFile'
+            ,url: '/api/employee/upload' //改成您自己的上传接口
+            , method:'post'
+            ,accept: 'file' //普通文件
+            ,exts: 'xlsx|xls'
+            ,before: function(obj){ //obj参数包含的信息，跟 choose回调完全一致，可参见上文。
+                layer.load(); //上传loading
+            }
+            ,done: function(res, index, upload){
+                layer.msg('上传成功');
+                if(res.code == 200){
+                    //执行重载
+                    table.reload('mytable', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    }, 'data');
+                } else {
+                    layer.msg('上传失败！' + res.message);
+                }
+                console.log(res)
+                layer.closeAll('loading'); //关闭loading
+            }
+            ,error: function(index, upload){
+                layer.msg('上传失败！');
+                layer.closeAll('loading'); //关闭loading
+            }
+        });
+
+        //第一个实例
+        var opation = {
+            elem: '#mytable'
+            ,height: 600
+            //,height: 'full-200'
+            ,cellMinWidth: 80
+            ,url: '/api/employee/list'
+            ,method:'POST'
+            ,contentType:'application/json'
+            ,page: true
+            ,toolbar: true
+            // , 'print', 'exports'
+            ,defaultToolbar: ['filter']
+            ,title: '用户数据表'
+            ,totalRow: false
+            ,autoSort: false
+            ,initSort: {field:'id', type:'desc'}
+            ,cols: [
+                [
+                    { field: 'id', title: 'ID', width:80, sort: true, fixed: 'left' }
+                    ,{ field: 'employeeNumber', title: '员工工号', width:120 ,edit: 'text', sort: true }
+                    ,{ field: 'type', title: '员工类型', width:120 ,edit: 'text', sort: true
+                    ,templet: function(d){
+                        var t = d.type || '';
+                        switch(d.type) {
+                            case 1:
+                                t = '正式员工';
+                                break;
+                            case 2:
+                                t = '离职';
+                                break;
+                            case 3:
+                                t = '试用';
+                                break;
+                            case 4:
+                                t = '实习';
+                                break;
+                        }
+                        return t;
+                    }}
+                    ,{ field: 'name', title: '用户名', width:120,edit: 'text', sort: true }
+                    ,{ field: 'joiningTime', title: '入职时间', width:140,edit: 'text', sort: true }
+                    ,{ field: 'sex', title: '性别', width:100, edit: 'text', sort: true }
+                    ,{ field: 'post', title: '岗位', width:140, edit: 'text', sort: true }
+                    ,{ field: 'jobType', title: '职务类型', width:140, edit: 'text', sort: true }
+                    ,{ field: 'belongTo', title: '归属', width:140, edit: 'text', sort: true }
+                    ,{ field: 'levelOrg1', title: '一级机构', width:140, edit: 'text', sort: true }
+                    ,{ field: 'levelOrg2', title: '二级机构', width:140, edit: 'text', sort: true }
+                    ,{ field: 'levelOrg3', title: '三级机构', width:140, edit: 'text' , sort: true}
+                    ,{ field: 'levelOrg4', title: '四级机构', width:140, edit: 'text' , sort: true}
+                    ,{ field: 'phoneNumber', title: '联系电话', width:140, edit: 'text', sort: true }
+                    ,{ field: 'urgentPhoneNumber', title: '紧急联系电话', width:140, edit: 'text', sort: true }
+                    ,{ field: 'education', title: '学历', width:100, edit: 'text', sort: true }
+                    ,{ field: 'school', title: '毕业学校', width:140, edit: 'text', sort: true }
+                    ,{ field: 'specializedSubject', title: '专业', width:140, edit: 'text', sort: true }
+                    ,{ field: 'graduation', title: '毕业时间', width:140, edit: 'text', sort: true }
+                    ,{ field: 'schoolType', title: '学校类型', width:140, edit: 'text', sort: true }
+                    ,{ field: 'politicalStatus', title: '政治面貌', width:140, edit: 'text', sort: true }
+                    ,{ field: 'maritalStatus', title: '婚姻状况', width:140, edit: 'text', sort: true }
+                    ,{ field: 'fertilityStatus', title: '生育情况', width:140, edit: 'text', sort: true }
+                    ,{ field: 'idcard', title: '身份证', width:140, edit: 'text', sort: true }
+                    ,{ field: 'birth', title: '出生日期', width:140, edit: 'text', sort: true }
+                    ,{ field: 'age', title: '年龄', width:100, edit: 'text', sort: true }
+                    ,{ field: 'nation', title: '民族', width:100, edit: 'text', sort: true }
+                    ,{ field: 'nativePlace', title: '籍贯', width:100, edit: 'text', sort: true }
+                    ,{ field: 'domicileType', title: '户籍类型', width:140, edit: 'text', sort: true }
+                    ,{ field: 'address', title: '家庭住址', width:140, edit: 'text', sort: true }
+                    ,{ field: 'expiryStartDate', title: '证件有效期开始时间', width:180, edit: 'text', sort: true }
+                    ,{ field: 'expiryEndDate', title: '证件有效期结束时间', width:180, edit: 'text', sort: true }
+                    ,{ field: 'certificationAuthority', title: '发证机构', width:180, edit: 'text', sort: true }
+                    ,{ field: 'probation', title: '试用期', width:140, edit: 'text', sort: true }
+                    ,{ field: 'salary', title: '薪资', width:140, edit: 'text', sort: true }
+                    ,{ field: 'becomeRegularWorkerDate', title: '转正日期', width:140, edit: 'text', sort: true }
+                    ,{ field: 'leaveOfficeDate', title: '离职日期', width:140, edit: 'text', sort: true }
+                    ,{ field: 'signContractStart1', title: '第一次签订劳动合同开始日', width:230, edit: 'text', sort: true }
+                    ,{ field: 'signContractEnd1', title: '第一次签订劳动合同结束日', width:230, edit: 'text', sort: true }
+                    ,{ field: 'signContractEnd1', title: '第一次合同期限', width:230, edit: 'text', sort: true
+                    ,templet: function(d){
+                        if(d.signContractStart1 && d.signContractEnd1){
+                            return (parseInt(d.signContractEnd1.split('-')[0]) - parseInt(d.signContractStart1.split('-')[0])) + '年';
+                        }
+                        return '';
+                    }
+                }
+                    ,{ field: 'signContractStart2', title: '第二次签订劳动合同开始日', width:230, edit: 'text', sort: true }
+                    ,{ field: 'signContractEnd2', title: '第二次签订劳动合同结束日', width:230, edit: 'text', sort: true }
+                    ,{ field: 'signContractEnd2', title: '第二次合同期限', width:230, edit: 'text', sort: true
+                    ,templet: function(d){
+                        if(d.signContractStart2 && d.signContractEnd2){
+                            return (parseInt(d.signContractEnd2.split('-')[0]) - parseInt(d.signContractStart2.split('-')[0])) + '年';
+                        }
+                        return '';
+                    }
+                }
+//                    ,{ field: 'signContractStart3', title: '第三次签订劳动合同开始日', width:120, edit: 'text' }
+//                    ,{ field: 'signContractEnd3', title: '第三次签订劳动合同结束日', width:120, edit: 'text' }
+                    ,{ field: 'contractSigningCompany', title: '合同公司', width:160, edit: 'text', sort: true }
+                    ,{ field: 'recruitChannel', title: '招聘渠道', width:140, edit: 'text', sort: true }
+                    ,{ field: 'interview1', title: '一面', width:140, edit: 'text', sort: true }
+                    ,{ field: 'interview2', title: '二面', width:140, edit: 'text', sort: true }
+                    ,{ field: 'interview3', title: '三面', width:140, edit: 'text', sort: true }
+                    ,{ field: 'teacher', title: '导师', width:140, edit: 'text', sort: true }
+                    ,{ field: 'location', title: '地点', width:140, edit: 'text', sort: true }
+                    ,{ field: 'oldJob', title: '曾任职企业', width:140, edit: 'text', sort: true }
+                    ,{ field: 'ascription', title: '人事关系归属', width:140, edit: 'text', sort: true }
+                    ,{ field: 'createDate', title: '创建时间', width:140, edit: 'text', sort: true }
+                    ,{ field: 'creator', title: '创建者', width:140, edit: 'text', sort: true }
+                    ,{ field: 'modifyDate', title: '最后修改时间', width:140, edit: 'text', sort: true }
+                    ,{ field: 'editor', title: '最后修改人', width:140, edit: 'text', sort: true }
+                    ,{ fixed: 'right', width: 80, align:'center', toolbar: '#barDemo' }
+                ]
+            ]
+            ,response: {
+                //重新规定成功的状态码为 200，table 组件默认为 0
+                statusCode: 200
+            }
+            ,parseData: function(res){
+                console.info(res)
+                return {
+                    'code': res.code,
+                    'msg': res.message,
+                    'count': res.data.totalElements,
+                    'data': res.data.content
+                };
+            }
+            ,done: function(res, curr, count){
+                //如果是异步请求数据方式，res即为你接口返回的信息。
+                //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
+                console.log(res);
+
+                //得到当前页码
+                console.log(curr);
+
+                //得到数据总量
+                console.log(count);
+            }
+        };
+        table.render(opation);
+        //监听表格复选框选择
+//        table.on('checkbox(test)', function(obj){
+//            console.log(obj)
+//        });
+//        //监听工具条
+        table.on('tool(mytable)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                layer.msg('ID：'+ data.id + ' 的查看操作');
+            } else if(obj.event === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    data.status = 0;
+                    console.info("删除的数据：" + JSON.stringify(obj.data))
+                    $.ajax({
+                        method:'post',
+                        url:'/api/employee/update',
+                        data:JSON.stringify(data),
+                        contentType:'application/json;charset=UTF-8',
+                        dataType:'json',
+                        success:function (data) {
+                            console.log(data);
+                            layer.msg(data.message);
+                        }
+                    })
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if(obj.event === 'edit'){
+                layer.alert('编辑行：<br>'+ JSON.stringify(data))
+            }
+        });
+//
+//        var $ = layui.$, active = {
+//            getCheckData: function(){ //获取选中数据
+//                var checkStatus = table.checkStatus('idTest')
+//                    ,data = checkStatus.data;
+//                layer.alert(JSON.stringify(data));
+//            }
+//            ,getCheckLength: function(){ //获取选中数目
+//                var checkStatus = table.checkStatus('idTest')
+//                    ,data = checkStatus.data;
+//                layer.msg('选中了：'+ data.length + ' 个');
+//            }
+//            ,isAll: function(){ //验证是否全选
+//                var checkStatus = table.checkStatus('idTest');
+//                layer.msg(checkStatus.isAll ? '全选': '未全选')
+//            }
+//        };
+//
+//        $('.demoTable .layui-btn').on('click', function(){
+//            var type = $(this).data('type');
+//            active[type] ? active[type].call(this) : '';
+//        });
+
+        var $ = layui.$, active = {
+            reload: function(){
+                // demoReload 搜索的字段 取值
+                var demoReload = $('#demoReload');
+                //获取表单区域所有值
+                var data = form.val("search_form");
+                console.info(data)
+                //执行重载
+                table.reload('mytable', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                    ,where: data
+                }, 'data');
+            }
+            ,exportTable: function () {
+                var params = form.val("search_form");
+                params.page = -1;
+                $.ajax({
+                    url: '/api/employee/list',
+                    method:'post',
+                    data:JSON.stringify(params),
+                    contentType:'application/json;charset=UTF-8',
+                    dataType:'json',
+                    success: function(res) {
+                        console.log(res.data);// [{name: 'wang', age: 18, sex: '男'}, {name: 'layui', age: 3, sex: '女'}]
+                        // 1. 数组头部新增表头
+                        var title = {};
+                        var fields = [];
+                        opation.cols[0].forEach(function (item, index, arr) {
+                            title[item.field] = item.title;
+                            fields.push(item.field)
+                        })
+                        res.data.unshift(title);
+                        // 2. 如果需要调整顺序，请执行梳理函数
+                        var data = excel.filterExportData(res.data, fields);
+                        // 3. 执行导出函数，系统会弹出弹框
+                        excel.exportExcel({
+                            sheet1: data
+                        }, '员工数据'+ new Date().getTime() +'.xlsx', 'xlsx');
+                    }
+                });
+            }
+            ,addRow: function(){
+                var data = {
+                    "id":null,
+                    "status":1,
+                    "createDate":null,
+                    "creator":null,
+                    "modifyDate":null,
+                    "editor":null,
+                    "employeeNumber":null,
+                    "type":null,
+                    "name":null,
+                    "joiningTime":null,
+                    "sex":null,
+                    "post":null,
+                    "jobType":null,
+                    "belongTo":null,
+                    "levelOrg1":null,
+                    "levelOrg2":null,
+                    "levelOrg3":null,
+                    "levelOrg4":"",
+                    "phoneNumber":null,
+                    "urgentPhoneNumber":null,
+                    "education":null,
+                    "school":null,
+                    "specializedSubject":null,
+                    "graduation":null,
+                    "schoolType":"",
+                    "politicalStatus":null,
+                    "maritalStatus":null,
+                    "fertilityStatus":"",
+                    "idcard":null,
+                    "birth":null,
+                    "age":null,
+                    "nation":"",
+                    "nativePlace":"",
+                    "domicileType":"",
+                    "address":"",
+                    "expiryStartDate":"",
+                    "expiryEndDate":"",
+                    "certificationAuthority":"",
+                    "probation":"",
+                    "becomeRegularWorkerDate":"",
+                    "leaveOfficeDate":null,
+                    "signContractStart1":"",
+                    "signContractEnd1":"",
+                    "signContractStart2":"",
+                    "signContractEnd2":"",
+                    "signContractStart3":null,
+                    "signContractEnd3":null,
+                    "contractSigningCompany":"",
+                    "recruitChannel":"",
+                    "interview1":"",
+                    "interview2":"",
+                    "interview3":null,
+                    "teacher":"",
+                    "location":"",
+                    "oldJob":"",
+                    "ascription":""
+                };
+                $.ajax({
+                    method:'post',
+                    url:'/api/employee/insert',
+                    data:JSON.stringify(data),
+                    contentType:'application/json;charset=UTF-8',
+                    dataType:'json',
+                    success:function (data) {
+                        console.log(data);
+                        table.reload('mytable', {
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        }, 'data');
+                        layer.msg(data.message);
+                    }
+                })
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+        //监听单元格编辑
+        table.on('edit(mytable)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            data[field] = value.trim();
+//            layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+            if(data.id){
+                $.ajax({
+                    method:'post',
+                    url:'/api/employee/update',
+                    data:JSON.stringify(data),
+                    contentType:'application/json;charset=UTF-8',
+                    dataType:'json',
+                    success:function (data) {
+                        console.log(data);
+                        layer.msg(data.message);
+                    }
+                })
+            }
+        });
+
+        //监听排序事件
+        table.on('sort(mytable)', function(obj){ //注：sort 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            console.log(obj.field); //当前排序的字段名
+            console.log(obj.type); //当前排序类型：desc（降序）、asc（升序）、null（空对象，默认排序）
+            console.log(this); //当前排序的 th 对象
+            //尽管我们的 table 自带排序功能，但并没有请求服务端。
+            //有些时候，你可能需要根据当前排序的字段，重新向服务端发送请求，从而实现服务端排序，如：
+            table.reload('mytable', {
+                initSort: obj //记录初始排序，如果不设的话，将无法标记表头的排序状态。
+                ,where: { //请求参数（注意：这里面的参数可任意定义，并非下面固定的格式）
+                    sortField: obj.field //排序字段
+                    ,sortOrder: obj.type //排序方式
+                }
+            });
+//            layer.msg('服务端排序。order by '+ obj.field + ' ' + obj.type);
+        });
+    });
+
+</script>
+</body>
+</html>

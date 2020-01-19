@@ -1,0 +1,29 @@
+使用文档
+1、需要建一个名为”test“的数据库
+2、系统第一次启动时自动会创建表 hr_user （登入用户表）  hr_employee（导入员工数据的表）
+3、要登入需要手动创建用户，存的是明文密码
+INSERT INTO `test`.`hr_user` (`id`, `create_date`, `password`, `status`, `username`) VALUES ('1', NULL, '123456', '1', 'admin');
+
+4、系统启动命令
+jdk 要装1.8或以上的
+启动：nohup java -jar hr-0.0.1-SNAPSHOT.jar &
+
+第二种启动方式：
+    选择登入需要MD5：nohup java -jar hr-0.0.1-SNAPSHOT.jar --password.encryption=md5 &
+    md5加密网站：https://www.cmd5.com/
+    数据库需要存的是：
+        INSERT INTO `test`.`hr_user` (`id`, `create_date`, `password`, `status`, `username`) VALUES ('1', NULL, 'e10adc3949ba59abbe56e057f20f883e', '1', 'admin');
+    例：登入输入username=admin,密码输入：123456
+端口默认：8080
+
+警告：
+    该系统是单点的，确保数据安全请及时备份数据库！！！！！！！！
+
+功能：
+    1、登入
+    2、登出
+    3、列表展示+搜索
+    4、点击单元格编辑
+    5、添加行新增
+    6、导出表格
+    7、导入数据

@@ -1,0 +1,126 @@
+ [2020-01-19 09:03:01.020] ERROR o.s.b.d.LoggingFailureAnalysisReporter 40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field employeeService in com.youkeshu.hr.web.EmployeeController required a bean of type 'com.youkeshu.hr.service.IEmployeeService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.youkeshu.hr.service.IEmployeeService' in your configuration.
+
+ [2020-01-19 09:03:16.652] ERROR o.s.b.d.LoggingFailureAnalysisReporter 40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field employeeService in com.youkeshu.hr.web.EmployeeController required a bean of type 'com.youkeshu.hr.service.IEmployeeService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.youkeshu.hr.service.IEmployeeService' in your configuration.
+
+ [2020-01-19 09:03:43.696] ERROR o.s.b.d.LoggingFailureAnalysisReporter 40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field employeeService in com.youkeshu.hr.web.EmployeeController required a bean of type 'com.youkeshu.hr.service.IEmployeeService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.youkeshu.hr.service.IEmployeeService' in your configuration.
+
+ [2020-01-19 11:14:18.850] ERROR o.s.b.d.LoggingFailureAnalysisReporter 40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field employeeService in com.youkeshu.hr.web.EmployeeController required a bean of type 'com.youkeshu.hr.service.IEmployeeService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.youkeshu.hr.service.IEmployeeService' in your configuration.
+
+ [2020-01-19 11:52:02.632] ERROR o.s.b.d.LoggingFailureAnalysisReporter 40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field employeeService in com.youkeshu.hr.web.EmployeeController required a bean of type 'com.youkeshu.hr.service.IEmployeeService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.youkeshu.hr.service.IEmployeeService' in your configuration.
+
+ [2020-01-19 12:23:57.584] ERROR o.s.b.d.LoggingFailureAnalysisReporter 40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field employeeService in com.youkeshu.hr.web.EmployeeController required a bean of type 'com.youkeshu.hr.service.IEmployeeService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.youkeshu.hr.service.IEmployeeService' in your configuration.
+
+ [2020-01-19 12:24:08.585] ERROR o.s.b.d.LoggingFailureAnalysisReporter 40 - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field employeeService in com.youkeshu.hr.web.EmployeeController required a bean of type 'com.youkeshu.hr.service.IEmployeeService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.youkeshu.hr.service.IEmployeeService' in your configuration.
+

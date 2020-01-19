@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>登录</title>
+    <link th:href="@{/static/layui/css/layui.css}" rel="stylesheet" />
+    <link th:href="@{/static/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+    <div class="login-main">
+        <header class="layui-elip">登录</header>
+        <form class="layui-form">
+            <div class="layui-input-inline">
+                <input type="text"
+                       name="username"
+                       required
+                       lay-verify="required"
+                       placeholder="用户名"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <input type="password"
+                       name="password"
+                       required
+                       lay-verify="required"
+                       placeholder="密码"
+                       autocomplete="off"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline login-btn">
+                <button lay-submit lay-filter="login" class="layui-btn">登录</button>
+            </div>
+            <hr/>
+        </form>
+    </div>
+    <script th:src="@{/static/layui/layui.all.js}"></script>
+    <script type="text/javascript">
+        layui.use(['form','layer','jquery'], function () {
+            // 操作对象
+            var form = layui.form;
+            var $ = layui.jquery;
+            form.on('submit(login)',function (data) {
+                $.ajax({
+                    method:'post',
+                    url:'/api/login',
+                    data:JSON.stringify(data.field),
+                    contentType:'application/json;charset=UTF-8',
+                    dataType:'json',
+                    success:function (data) {
+                        console.log(data);
+                        if (data.code == 200){
+                            location.href = "/index";
+                        }else{
+                            layer.msg(data.message);
+                        }
+                    }
+                })
+                return false;
+            })
+        });
+    </script>
+
+</body>
+</html>
